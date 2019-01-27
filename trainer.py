@@ -2,18 +2,22 @@ from keras import layers
 from keras import models
 from keras import optimizers
 from keras.preprocessing.image import ImageDataGenerator
-
+from keras.preprocessing.image import image
+import numpy as np
+import os
 
 class Trainer:
 
     def __init__(self , **kwargs):
 
-        self.train_dir = kwargs["train_dir"]
-        self.test_dir = kwargs["test_dir"]
-        self.validation_dir = kwargs["validation_dir"]
-        self.epochs = kwargs["epochs"]
-        self.batch_size = kwargs["batch_size"]
-        self.validation_step = kwargs["validation_step"]
+
+        if len(kwargs) != 0:
+            self.train_dir = kwargs["train_dir"]
+            self.test_dir = kwargs["test_dir"]
+            self.validation_dir = kwargs["validation_dir"]
+            self.epochs = kwargs["epochs"]
+            self.batch_size = kwargs["batch_size"]
+            self.validation_step = kwargs["validation_step"]
 
 
 
@@ -96,5 +100,32 @@ class Trainer:
 
         self.model.save(model_name)
 
+    def predict(self , image_path):
 
 
+        if os.path.isfile(image_path) == False:
+            print("{} does not exists!!".format(image_path))
+            return
+
+        img = image.load_img(image_path , target_size = (150 , 150))
+        img = image.img_to_array(img)
+        image_tensor = np.expand_dims(img, axis = 0)
+        image_tensor /= 255
+
+        return self.model.predict_classes(image_tensor)
+
+    def load_model(self , model_name):
+        self.model = models.load_model(model_name)
+
+
+def main():
+    trainer = Trainer()
+    trainer.load_model("training_model.h5")
+    files = os.listdir("./validation/cat")
+
+    for current_file in files:
+        print(current_file)
+        print(trainer.predict("./validation/cat/{}".format(current_file)))
+
+if __name__ == "__main__":
+    main()
