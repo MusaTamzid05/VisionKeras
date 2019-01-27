@@ -1,6 +1,7 @@
 import os
 import shutil
 import sys
+import argparse
 
 
 def create_dir_from(dst_dir , name):
@@ -84,8 +85,28 @@ def prepare_data(data_dir , dst_dir , labels , train_percentise = 80):
 
 def main():
 
+
+    parser = argparse.ArgumentParser(description = "Prepares data ")
+    parser.add_argument("-data" , required = True , dest = "data_dir")
+    parser.add_argument("-label1" , required = True , dest = "label1")
+    parser.add_argument("-label2" , required = True , dest = "label2")
+
+    args = parser.parse_args()
+
+
+    data_dir = args.data_dir
+    label1 = args.label1
+    label2 = args.label2
+
+    if os.path.isdir(data_dir) == False:
+        print("{} does not exists !!!".format(data_dir))
+        sys.exit(1)
+
     current_dir = os.getcwd()
-    prepare_data(current_dir + "/data", current_dir , [ "cat" , "dog" ])
+
+
+
+    prepare_data( data_dir , current_dir , [label1 , label2 ])
 
 if __name__ == "__main__":
     main()

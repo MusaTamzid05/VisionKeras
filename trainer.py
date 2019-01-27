@@ -83,7 +83,7 @@ class Trainer:
 
         history = self.model.fit_generator(
                 self.train_generator ,
-                steps_per_epochs = self.epochs ,
+                steps_per_epoch = self.epochs ,
                 epochs = self.epochs ,
                 validation_data = self.validation_generator ,
                 validation_steps = self.validation_step
@@ -98,11 +98,3 @@ class Trainer:
 
 
 
-def main():
-
-    trainer = Trainer(train_dir = "./train" , test_dir = "./test" , validation_dir = "./validation")
-    trainer.train()
-
-
-if __name__ == "__main__":
-    main()
