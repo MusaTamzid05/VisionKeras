@@ -1,7 +1,7 @@
 import argparse
 import os
 import sys
-from images_helper import get_size
+from trainer import Trainer
 
 
 def dir_check(train_dir , test_dir , validation_dir):
@@ -37,6 +37,10 @@ def main():
 
 
     dir_check(train_dir , test_dir , validation_dir)
+
+    trainer = Trainer(train_dir = train_dir , test_dir = test_dir , validation_dir =  validation_dir ,
+            epochs = 100 , batch_size = 32 , validation_step = 50)
+    trainer.train()
 
 
 

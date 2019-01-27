@@ -6,11 +6,13 @@ from keras.preprocessing.image import ImageDataGenerator
 
 class Trainer:
 
-    def __init__(self , train_dir , test_dir , validation_dir):
+    def __init__(self , **kwargs):
 
-        self.train_dir = train_dir
-        self.test_dir = test_dir
-        self.validation_dir =validation_dir
+        self.train_dir = kwargs["train_dir"]
+        self.test_dir = kwargs["test_dir"]
+        self.validation_dir = kwargs["validation_dir"]
+        self.epochs = kwargs["epochs"]
+        self.batch_size = kwargs["batch_size"]
 
     def _init_model(self):
 
@@ -59,7 +61,7 @@ class Trainer:
         self.train_generator = train_datagen.flow_from_directory(
                 self.train_dir,
                 target_size = (150 , 150),
-                batch_size = 32 ,
+                batch_size = self.batch_size,
                 class_mode = "binary"
                 )
 
@@ -67,7 +69,7 @@ class Trainer:
         self.validation_generator = test_datagen.flow_from_directory(
                 self.validation_dir,
                 target_size = (150 , 150),
-                batch_size = 32 ,
+                batch_size = self.batch_size,
                 class_mode = "binary"
                 )
 
