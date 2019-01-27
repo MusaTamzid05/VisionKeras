@@ -3,4 +3,5 @@ train
 test
 data
 validation
+*.h5
 
