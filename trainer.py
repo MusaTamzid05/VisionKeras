@@ -13,6 +13,9 @@ class Trainer:
         self.validation_dir = kwargs["validation_dir"]
         self.epochs = kwargs["epochs"]
         self.batch_size = kwargs["batch_size"]
+        self.validation_step = kwargs["validation_step"]
+
+
 
     def _init_model(self):
 
@@ -73,10 +76,25 @@ class Trainer:
                 class_mode = "binary"
                 )
 
-    def train(self):
+    def train(self , model_name = ""):
 
         self._init_model()
         self._init_data()
+
+        history = self.model.fit_generator(
+                self.train_generator ,
+                steps_per_epochs = self.epochs ,
+                epochs = self.epochs ,
+                validation_data = self.validation_generator ,
+                validation_steps = self.validation_step
+                )
+
+        if model_name == "":
+            model_name = "training_model"
+
+        model_name += ".h5"
+
+        self.model.save(model_name)
 
 
 
