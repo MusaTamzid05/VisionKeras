@@ -1,5 +1,6 @@
 import os
 from shutil import copyfile
+import argparse
 
 class ImageFileLabeler:
     '''
@@ -44,8 +45,15 @@ class ImageFileLabeler:
 
 def main():
 
-    image_file_labeler = ImageFileLabeler(image_dir_path = "./data")
-    image_file_labeler.prepare(dst_dir = "./label_data")
+    parser = argparse.ArgumentParser(description = "This changes all unorganized files to labels")
+    parser.add_argument("--image_data_dir " , required = True , dest = "image_data_dir")
+    parser.add_argument("--dst" , default = "./label_data" ,  dest = "dst" , help = "the path where image would be downloaded")
+    parser.add_argument("--character_count" , type = int ,  default = 3 , dest = "character_count")
+
+    args = parser.parse_args()
+    image_file_labeler = ImageFileLabeler(image_dir_path = args.image_data_dir,
+                                         character_count = args.character_count)
+    image_file_labeler.prepare(dst_dir = args.dst)
 
 if __name__ == "__main__":
     main()
