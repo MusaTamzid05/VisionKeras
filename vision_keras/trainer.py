@@ -8,16 +8,20 @@ import os
 
 class Trainer:
 
-    def __init__(self , **kwargs):
+    def __init__(self ,
+            train_dir = "./train_dir",
+            test_dir = "./test_dir",
+            validation_dir = "./validation_dir",
+            epochs = 30,
+            batch_size = 20,
+            validation_step = 50):
 
-
-        if len(kwargs) != 0:
-            self.train_dir = kwargs["train_dir"]
-            self.test_dir = kwargs["test_dir"]
-            self.validation_dir = kwargs["validation_dir"]
-            self.epochs = kwargs["epochs"]
-            self.batch_size = kwargs["batch_size"]
-            self.validation_step = kwargs["validation_step"]
+        self.train_dir = train_dir
+        self.test_dir = test_dir
+        self.validation_dir = validation_dir
+        self.epochs = epochs
+        self.batch_size = batch_size
+        self.validation_step = validation_step
 
 
 
@@ -85,14 +89,6 @@ class Trainer:
         self._init_model()
         self._init_data()
 
-        history = self.model.fit_generator(
-                self.train_generator ,
-                steps_per_epoch = self.epochs ,
-                epochs = self.epochs ,
-                validation_data = self.validation_generator ,
-                validation_steps = self.validation_step
-                )
-
         if model_name == "":
             model_name = "training_model"
 
@@ -116,6 +112,7 @@ class Trainer:
 
     def load_model(self , model_name):
         self.model = models.load_model(model_name)
+
 
 
 def main():

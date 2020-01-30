@@ -23,11 +23,17 @@ class ImageFileLabeler:
 
     def prepare(self , dst_dir):
 
+        labels = []
+
         if os.path.exists(dst_dir) == False:
             os.makedirs(dst_dir)
 
         for current_file in self.files:
             current_label = current_file[0:self.character_count]
+
+            if current_label not in labels:
+                labels.append(current_label)
+
             current_dst_dir = os.path.join(dst_dir , current_label)
 
             if os.path.exists(current_dst_dir) == False:
@@ -37,6 +43,8 @@ class ImageFileLabeler:
             dst_path = os.path.join(current_dst_dir , current_file)
             print("{} => {}".format(src_path , dst_path))
             copyfile(src_path , dst_path)
+
+        return labels
 
 
 
